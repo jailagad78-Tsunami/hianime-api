@@ -21,7 +21,8 @@ export async function scrapeAnimeDetail(animeId) {
     if (values.length === 0) { const v = extractText($(el).find(".name")); if (v) values.push(v); }
     if (key && values.length) info[key] = values.length === 1 ? values[0] : values;
   });
-  const numericId = $("#syncData").attr("data-id") || $("[data-anime-id]").attr("data-anime-id") || "";
+  let numericId = $("#syncData").attr("data-id") || $("[data-anime-id]").first().attr("data-anime-id") || $("#detail-page").attr("data-id") || $(".film-buttons a[href*='watch']").first().attr("href")?.match(/-(\d+)\?/)?.[1] || $("a.btn-play").first().attr("href")?.match(/-(\d+)\?/)?.[1] || "";
+  if (!numericId) { const urlMatch = animeId.match(/-(\d+)$/); if (urlMatch) numericId = urlMatch[1]; }
   const seasons = [];
   $("#main-content .os-list .os-item").each((_, el) => {
     const $el = $(el);
@@ -37,10 +38,7 @@ export async function scrapeAnimeDetail(animeId) {
     description: extractText($(".film-description .text")),
     poster: extractImage($(".anisc-poster .film-poster img")),
     quality: extractText($(".anisc-detail .tick .tick-quality")),
-    episodes: {
-      sub: parseInt(extractText($(".anisc-detail .tick .tick-sub"))) || 0,
-      dub: parseInt(extractText($(".anisc-detail .tick .tick-dub"))) || 0,
-    },
+    episodes: { sub: parseInt(extractText($(".anisc-detail .tick .tick-sub"))) || 0, dub: parseInt(extractText($(".anisc-detail .tick .tick-dub"))) || 0 },
     info, seasons, related,
   };
 }
