@@ -1,0 +1,10 @@
+import { Hono } from "hono";
+import { homeController, searchController, animeController, episodesController, serversController, streamController } from "../controllers/index.js";
+const router = new Hono();
+router.get("/home", homeController);
+router.get("/search", searchController);
+router.get("/anime/:id", animeController);
+router.get("/episodes/:id", episodesController);
+router.get("/servers", serversController);
+router.get("/stream", streamController);
+export default router;

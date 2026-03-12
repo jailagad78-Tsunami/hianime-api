@@ -1,0 +1,1 @@
+{"name":"hianime-api","version":"1.0.0","type":"module","scripts":{"dev":"bun --watch src/server.js","start":"bun src/server.js"},"dependencies":{"hono":"^4.1.0","axios":"^1.6.8","cheerio":"^1.0.0-rc.12"}}
